@@ -1,4 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import ssl
 
 
 class EchoHandler(BaseHTTPRequestHandler):
@@ -9,8 +10,9 @@ class EchoHandler(BaseHTTPRequestHandler):
 
 def main():
     port = 443
-    adress = ('krabchuk.me', port)
+    adress = ('localhost', port)
     server = HTTPServer(adress, EchoHandler)
+    server.socket = ssl.wrap_socket(server.socket, certfile='../certs/server.pem', server_side=True)
     server.serve_forever()
 
 main()
